@@ -43,7 +43,7 @@ $ nano web/bash_aliases
 
 ### Define the crontab
 ```bash
-$ cp crontab.dist crontab
+$ cp web/crontab.dist web/crontab
 $ nano crontab
 ```
 
@@ -63,6 +63,22 @@ environment_web_1         docker-custom-entrypoint         Up      0.0.0.0:443->
 ```
 Note: You will see something slightly different if you do not clone the repository in a `environment` directory.
 The container prefix depends on your directory name.
+
+### Access to the containers
+#### Database
+In your docker folder, type :
+```bash
+docker exec -it environment_web_1 bash
+```
+Then type : 
+```bash
+mysql -uroot -hmysql
+```
+#### Debian
+In your docker folder, type :
+```bash
+docker exec -it environment_web_1 bash
+```
 
 ## Tips
 1. You can add custom virtual hosts: all `./web/vhosts/*.conf` files are copied in the Apache directory during the image build process.
@@ -85,3 +101,22 @@ The container prefix depends on your directory name.
         - `goenvironment`   : go to your docker folder
         - `gosites $1`      : go to `~/www/$1` the default websites folder. `$1` is optional
         
+## Notes for Drupal
+This below settings can be use in `sites/default/settings.php` for a drupal 7 :
+```bash
+$databases = array (
+  'default' => 
+  array (
+    'default' => 
+    array (
+      'database' => 'yourdatabase',
+      'username' => 'root',
+      'password' => '',
+      'host' => 'mysql',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    ),
+  ),
+);
+```
