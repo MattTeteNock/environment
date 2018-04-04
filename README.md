@@ -90,4 +90,15 @@ The container prefix depends on your directory name.
         - `ll`              : list the folder in a nice view
         - `goenvironment`   : go to your docker folder
         - `gosites $1`      : go to `~/www/$1` the default websites folder. `$1` is optional
-        
+5. **PHP CS Fixer** :
+    - Use it via the shell :
+        - You have a script in `Tools/PHP CS Fixer/script_php_cs.sh`
+        - It can take as argument any relative or full path in the volume of the web container.
+    - Use it with PHPStorm : 
+        - There also is a tools file in `Tools/PHP CS Fixer/PHP CS Fixer.xml`.
+        - It can be added as an external tool which allow you to use it on any files of a project.
+        - Just place the file in the folder :
+            - For Unix : `~/.<PRODUCT><VERSION>/tools`
+            - For Windows : `<SYSTEM DRIVE>\Users\<USER ACCOUNT NAME>\.<PRODUCT><VERSION>\tools`
+            - For Mac : `~/Library/Preferences/<PRODUCT><VERSION>/tools`
+        - Change the path to the script.

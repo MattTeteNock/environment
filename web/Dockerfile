@@ -33,6 +33,7 @@ RUN \
         openjdk-7-jdk && \
     docker-php-ext-install -j$(nproc) \
         bcmath \
+        calendar \
         hash \
         intl \
         mcrypt \
@@ -48,6 +49,10 @@ RUN \
     && perl -pi -e "s/mailhub=mail/mailhub=maildev/" /etc/ssmtp/ssmtp.conf \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
+
+# Install PHP CS Fixer
+ADD http://get.sensiolabs.org/php-cs-fixer.phar /usr/local/bin/php-cs-fixer
+RUN chmod a+x /usr/local/bin/php-cs-fixer
 
 # Install Composer globally
 RUN \
