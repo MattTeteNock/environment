@@ -1,5 +1,5 @@
 # Docker Environment
-This repository allows the creation of a Docker environment to work locally.
+This repository allows the creation of a Docker environment to work locally, based on Apache
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
