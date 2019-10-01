@@ -25,11 +25,11 @@ RUN apt-get update && \
         libxml2-utils \
         libxslt-dev \
         mailutils \
-        mysql-client \
+        mariadb-client \
         nano \
         openssl \
         ssh-client \
-        ssmtp \
+        msmtp \
         wget && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/62.1/icu4c-62_1-src.tgz && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && \
@@ -46,7 +46,7 @@ RUN apt-get update && \
         sockets \
         zip && \
     apt-get clean && \
-    perl -pi -e "s/mailhub=mail/mailhub=maildev/" /etc/ssmtp/ssmtp.conf && \
+#   perl -pi -e "s/mailhub=mail/mailhub=maildev/" /etc/ssmtp/ssmtp.conf && \
     usermod -u 1000 www-data
 
 # Install GMP
