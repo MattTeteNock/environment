@@ -57,6 +57,7 @@ RUN apt-get update && \
     docker-php-ext-install -j$(nproc) \
         bcmath \
         calendar \
+        exif \
         gd \
         hash \
         iconv \
