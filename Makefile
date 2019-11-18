@@ -14,9 +14,33 @@ export CLICOLOR=1
 DOCKER = docker
 DOCKER_COMPOSE = docker-compose
 
-##===============================================================
-## Configuration
-##===============================================================
+## =============================================================================
+##                             __   __
+##                            __ \ / __
+##                           /  \ | /  \
+##                               \|/
+##                          _,.---v---._
+##                 /\__/\  /            \
+##                 \_  _/ /              \
+##                   \ \_|           @ __|
+##                    \                \_
+##                     \     ,__/       /
+##                   ~~~`~~~~~~~~~~~~~~/~~~~
+##
+##                        _                                       __
+##       ___  ____ _   __(_)________  ____  ____ ___  ___  ____  / /_
+##      / _ \/ __ \ | / / / ___/ __ \/ __ \/ __ `__ \/ _ \/ __ \/ __/
+##     /  __/ / / / |/ / / /  / /_/ / / / / / / / / /  __/ / / / /_
+##     \___/_/ /_/|___/_/_/   \____/_/ /_/_/ /_/ /_/\___/_/ /_/\__/
+##
+##
+## =============================================================================
+
+##
+## =============================================================================
+##    Configuration
+## =============================================================================
+##
 
 aliases: ## Configure aliases
 	@if [[ ! -f web/bash_aliases ]]; then \
@@ -46,12 +70,12 @@ ini: ## Configure the x-custom.ini file
 	fi
 
 env: ## Configure the env file
-	@if [[ ! -f docker-env ]]; then \
-		cp docker-env.dist docker-env; \
-		nano docker-env; \
-		echo $(VERT)docker-env file configured!$(NORMAL); \
+	@if [[ ! -f .env ]]; then \
+		cp .env.dist .env; \
+		nano .env; \
+		echo $(VERT)env file configured!$(NORMAL); \
 	else \
-		echo $(VERT)docker-env file already configured$(NORMAL); \
+		echo $(VERT)env file already configured$(NORMAL); \
 	fi
 
 setup: ## Setup the environment
@@ -59,40 +83,36 @@ setup: aliases cron ini env
 
 .PHONY: aliases cron ini env setup
 
-##===============================================================
-## Installation & Launch
-##===============================================================
+## =============================================================================
+##    Installation & Launch
+## =============================================================================
 
 build: ## Build the environment
-	$(DOCKER_COMPOSE) pull --ignore-pull-failures
+	make setup
 	$(DOCKER_COMPOSE) build --pull
 
 start: ## Start the environment
-	@if [[ ! -f docker-env ]]; then \
-		echo 'The default configuration has been applied because the "docker-env" file was not configured.'; \
-		cp docker-env.dist docker-env; \
-	fi
 	$(DOCKER_COMPOSE) up -d --remove-orphans
-	$(DOCKER_COMPOSE) ps
+	make ps
 
 stop: ## Stop the environment
 	$(DOCKER_COMPOSE) stop
 
 restart: ## Restart the environment
-restart: stop start
+	make stop
+	make start
 
-install: ## Install the environment
-install: build start ssh
+install: build start ## Install the environment
 
 uninstall: ## Uninstall the environment
 	$(DOCKER_COMPOSE) kill
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 
-.PHONY: build start stop restart install uninstall
+.PHONY: build setup start stop restart install uninstall
 
-##===============================================================
-## Connection
-##===============================================================
+## =============================================================================
+##    Connection
+## =============================================================================
 
 go-web: ## Open a terminal in the "web" container
 	$(DOCKER_COMPOSE) exec web   sh -c "/bin/bash"
@@ -105,9 +125,9 @@ go-redis: ## Open a terminal in the "redis" container
 
 .PHONY: go-web go-mysql go-redis
 
-##===============================================================
-## Others
-##===============================================================
+## =============================================================================
+##    Others
+## =============================================================================
 
 cache: ## Flush everything stored into the "redis" container
 	$(DOCKER_COMPOSE) exec -T redis sh -c "redis-cli FLUSHALL"

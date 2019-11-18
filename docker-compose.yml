@@ -3,19 +3,25 @@ version: "3"
 services:
   web:
     build: web
-    env_file: docker-env
+    env_file: .env
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
+      # Projects files
+      - ${WEBSITES}:/var/www/html:rw,delegated
+      # Websites configuration
       - ./web/vhosts:/etc/apache2/sites-enabled/:ro
-      - "~/www:/var/www/html:rw,delegated"
-      - "~/logs/apache:/var/log/apache2:rw,delegated"
+      # Logs
+      - ./web/logs:/var/log/apache2:rw,delegated
+    depends_on:
+      - mysql
+      - redis
     tty: true
 
   mysql:
     build: mysql
-    env_file: docker-env
+    env_file: .env
     ports:
       - 3306:3306
     volumes:
@@ -24,20 +30,20 @@ services:
 
   redis:
     build: redis
-    env_file: docker-env
+    env_file: .env
     ports:
-      - "6379:6379"
+      - 6379:6379
     volumes:
       - redis:/data
     tty: true
 
   maildev:
     image: djfarrelly/maildev
-    env_file: docker-env
+    env_file: .env
     depends_on:
       - web
     ports:
-      - "1088:80"
+      - 1088:80
     tty: true
 
 volumes:

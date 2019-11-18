@@ -3,4 +3,5 @@
 /web/x-custom.ini
 !/web/vhosts/environment.conf
 docker-env
+.env
 /web/crontab

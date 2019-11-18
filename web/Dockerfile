@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 LABEL maintainer="Matthieu CONTET <matt.contet@icloud.com>"
 
@@ -9,6 +9,7 @@ RUN apt-get update && \
         autoconf \
         bzip2 \
         cron \
+        curl \
         git \
         gnupg \
         jpegoptim \
@@ -20,33 +21,56 @@ RUN apt-get update && \
         libjpeg-dev \
         libmcrypt-dev \
         libpng-dev \
+        libssh2-1-dev \
         libssl-dev \
+        libwebp-dev \
         libxml2-dev \
         libxml2-utils \
         libxslt-dev \
+        libzip-dev \
+        logrotate \
         mailutils \
         mariadb-client \
-        nano \
-        openssl \
-        ssh-client \
         msmtp \
-        wget && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+        moreutils \
+        nano \
+        net-tools \
+        netcat \
+        npm \
+        openssl \
+        p7zip-full \
+        procps \
+        ssh-client \
+        unzip \
+        vim \
+        wget \
+        zip && \
+    docker-php-ext-configure gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-gd \
+        --with-jpeg-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-webp-dir=/usr/include/ && \
+    docker-php-ext-configure zip \
+        --with-libzip && \
     curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/62.1/icu4c-62_1-src.tgz && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && \
     docker-php-ext-install -j$(nproc) \
         bcmath \
         calendar \
         gd \
         hash \
+        iconv \
         intl \
+        mbstring \
         mysqli \
         opcache \
         pdo_mysql \
         soap \
         sockets \
+        xml \
+        xsl \
         zip && \
     apt-get clean && \
-#   perl -pi -e "s/mailhub=mail/mailhub=maildev/" /etc/ssmtp/ssmtp.conf && \
     usermod -u 1000 www-data
 
 # Install GMP
@@ -68,19 +92,17 @@ RUN pecl install redis && \
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
-# Install PHP CS Fixer
-ADD http://get.sensiolabs.org/php-cs-fixer.phar /usr/local/bin/php-cs-fixer
-RUN chmod a+x /usr/local/bin/php-cs-fixer
-
 RUN wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.6/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer && \
 	chmod a+x /usr/local/bin/symfony-upgrade-fixer
 
 # Install Composer globally
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
-
-# Install Drush globally
-RUN composer global require drush/drush
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    composer config --global repos.packagist composer https://repo.packagist.org && \
+    composer global config minimum-stability alpha && \
+    composer global require "hirak/prestissimo" "sensiolabs-de/deprecation-detector" --no-suggest --optimize-autoloader --classmap-authoritative
+ENV PATH "${PATH}:/root/.composer/vendor/bin"
 
 # Install and activate SSL
 RUN a2enmod ssl; \
