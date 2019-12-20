@@ -86,13 +86,18 @@ RUN pecl install gnupg && \
     docker-php-ext-enable gnupg
 
 # Install Redis
-RUN pecl install redis && \
-    docker-php-ext-enable redis
+#RUN pecl install redis && \
+#    docker-php-ext-enable redis
 
 # Install Xdebug
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug
+#RUN pecl install xdebug && \
+#    docker-php-ext-enable xdebug
 
+# Install Symfony CLI
+RUN wget https://get.symfony.com/cli/installer -O - | bash && \
+    mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+
+# Install Symfony Upgrade Fixer
 RUN wget https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.6/symfony-upgrade-fixer.phar -O /usr/local/bin/symfony-upgrade-fixer && \
 	chmod a+x /usr/local/bin/symfony-upgrade-fixer
 

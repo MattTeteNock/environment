@@ -123,7 +123,10 @@ go-mysql: ## Open a terminal in the "mysql" container
 go-redis: ## Open a terminal in the "redis" container
 	$(DOCKER_COMPOSE) exec redis sh -c "/bin/bash"
 
-.PHONY: go-web go-mysql go-redis
+go-solr: ## Open a terminal in the "solr" container
+	$(DOCKER_COMPOSE) exec solr sh -c "/bin/bash"
+
+.PHONY: go-web go-mysql go-redis go-solr
 
 ## =============================================================================
 ##    Others

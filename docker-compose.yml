@@ -16,7 +16,8 @@ services:
       - ./web/logs:/var/log/apache2:rw,delegated
     depends_on:
       - mysql
-      - redis
+#      - redis
+      - solr
     tty: true
 
   mysql:
@@ -28,14 +29,14 @@ services:
       - mysql:/var/lib/mysql
     tty: true
 
-  redis:
-    build: redis
-    env_file: .env
-    ports:
-      - 6379:6379
-    volumes:
-      - redis:/data
-    tty: true
+#  redis:
+#    build: redis
+#    env_file: .env
+#    ports:
+#      - 6379:6379
+#    volumes:
+#      - redis:/data
+#    tty: true
 
   maildev:
     image: djfarrelly/maildev
@@ -46,6 +47,13 @@ services:
       - 1088:80
     tty: true
 
+  solr:
+    build: solr
+    volumes:
+      - ./solr/dist:/opt/solr/server/solr/solr5
+    ports:
+      - 8983:8983
+
 volumes:
   mysql: {}
-  redis: {}
+#  redis: {}
