@@ -98,6 +98,9 @@ start: ## Start the environment
 stop: ## Stop the environment
 	$(DOCKER_COMPOSE) stop
 
+down: ## Stop and remove containers, networks, images, and volumes
+	$(DOCKER_COMPOSE) down
+
 restart: ## Restart the environment
 	make stop
 	make start
