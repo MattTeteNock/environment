@@ -117,19 +117,19 @@ uninstall: ## Uninstall the environment
 ##    Connection
 ## =============================================================================
 
-go-web: ## Open a terminal in the "web" container
+goweb: ## Open a terminal in the "web" container
 	$(DOCKER_COMPOSE) exec web   sh -c "/bin/bash"
 
-go-mysql: ## Open a terminal in the "mysql" container
+gomysql: ## Open a terminal in the "mysql" container
 	$(DOCKER_COMPOSE) exec mysql sh -c "/bin/bash"
 
-go-redis: ## Open a terminal in the "redis" container
+goredis: ## Open a terminal in the "redis" container
 	$(DOCKER_COMPOSE) exec redis sh -c "/bin/bash"
 
-go-solr: ## Open a terminal in the "solr" container
+gosolr: ## Open a terminal in the "solr" container
 	$(DOCKER_COMPOSE) exec solr sh -c "/bin/bash"
 
-.PHONY: go-web go-mysql go-redis go-solr
+.PHONY: goweb gomysql goredis gosolr
 
 ## =============================================================================
 ##    Others
