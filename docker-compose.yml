@@ -38,14 +38,15 @@ services:
 #      - redis:/data
 #    tty: true
 
-  maildev:
-    image: djfarrelly/maildev
+  mailhog:
+    image: mailhog/mailhog
     env_file: .env
     depends_on:
       - web
+    restart: always
     ports:
-      - 1088:80
-    tty: true
+      - 1025:1025
+      - 8025:8025
 
   solr:
     build: solr
