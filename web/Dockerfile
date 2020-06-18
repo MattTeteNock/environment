@@ -53,7 +53,7 @@ RUN apt-get update && \
         --with-webp-dir=/usr/include/ && \
     docker-php-ext-configure zip \
         --with-libzip && \
-    curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/62.1/icu4c-62_1-src.tgz && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && \
+    curl -sS -o /tmp/icu.tar.gz -L https://ftp.osuosl.org/pub/blfs/conglomeration/icu/icu4c-62_1-src.tgz && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && \
     docker-php-ext-install -j$(nproc) \
         bcmath \
         calendar \
