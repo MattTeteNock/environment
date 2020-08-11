@@ -4,8 +4,8 @@ This repository allows the creation of a Docker environment to work locally, bas
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Architecture
-* `web`: [PHP 7.2 version](https://github.com/mattcontet/environment/blob/master/web/Dockerfile) with Apache.
-* `mysql`: [percona:5.6](https://hub.docker.com/_/percona/) image.
+* `web`: [PHP 7.3 version](https://github.com/mattcontet/environment/blob/master/web/Dockerfile) with Apache.
+* `mysql`: [percona:5.7](https://hub.docker.com/_/percona/) image.
 * `redis`: [redis:latest](https://hub.docker.com/_/redis/) image.
 * `maildev`: [djfarrelly/maildev:latest](https://hub.docker.com/r/djfarrelly/maildev/) image.
 
